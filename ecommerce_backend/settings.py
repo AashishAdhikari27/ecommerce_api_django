@@ -38,8 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',  # Your app name
+
+    'app',
+
     'rest_framework',
+
+    
     'drf_spectacular',
 ]
 
@@ -152,6 +156,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = "app.User"
+
+
 
 REST_FRAMEWORK = {
 
