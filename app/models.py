@@ -90,7 +90,7 @@ class User(AbstractUser):                                                   # Ex
         ('admin', 'Admin'),
     ]
         
-    username = models.CharField(_('Username'), max_length=50, unique=True)
+    username = models.CharField(_('Username'), max_length=50, unique=True, null=True, blank=True)
     email = models.EmailField(_('Email'), max_length=50, unique=True, blank=False)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='customer') 
     date_joined = models.DateTimeField(_('Date'), auto_now_add=True)
@@ -107,9 +107,15 @@ class User(AbstractUser):                                                   # Ex
         return f"User {self.username}"
 
 
+    def save(self, *args, **kwargs):
+        if User.objects.filter(email__iexact=self.email).exclude(pk=self.pk).exists():
+            raise ValueError("A user with that email already exists.")
 
-    ## For unique email validation while creating new user from client side using API
-    ## Database Level validation
+        super().save(*args, **kwargs)
+
+
+    # # For unique email validation while creating new user from client side using API
+    # # Database Level validation
     # class Meta:
     #     constraints = [
     #         models.UniqueConstraint(
